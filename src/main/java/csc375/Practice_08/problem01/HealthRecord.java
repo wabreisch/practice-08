@@ -73,7 +73,7 @@ public class HealthRecord {
 		while ((currLine = br.readLine()) != null) {
 			String[] splitLine = currLine.split(",");
 		
-			HealthRecord ccr =
+			HealthRecord hr =
 				new HealthRecord(
 					Integer.parseInt(splitLine[0].replaceAll("\"", "")),
 					Integer.parseInt(splitLine[1]),
@@ -81,7 +81,7 @@ public class HealthRecord {
 					Double.parseDouble(splitLine[3]),
 					Double.parseDouble(splitLine[4]));
 		
-			multimap.put(ccr.getDoctor(), ccr.getChildren());
+			multimap.put(hr.getDoctor(), hr.getChildren());
 		}
 
     	return multimap;
