@@ -109,7 +109,7 @@ public class HealthRecord {
 		while ((currLine = br.readLine()) != null) {
 			String[] splitLine = currLine.split(",");
 		
-			HealthRecord ccr =
+			HealthRecord hr =
 				new HealthRecord(
 					Integer.parseInt(splitLine[0].replaceAll("\"", "")),
 					Integer.parseInt(splitLine[1]),
@@ -117,7 +117,9 @@ public class HealthRecord {
 					Double.parseDouble(splitLine[3]),
 					Double.parseDouble(splitLine[4]));
 			
-			int accessValue = (int) (ccr.getAccess()*1000);
+			int accessValue = (int) (hr.getAccess()*1000);
+			
+			// I have no idea if this is a good way to use a TreeRangeSet...
 			if (lowerHalf.contains(accessValue)) {
 				lowerHalfCount++;
 			} else {
