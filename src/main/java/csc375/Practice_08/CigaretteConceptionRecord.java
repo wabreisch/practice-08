@@ -3,6 +3,7 @@ package csc375.Practice_08;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,66 +35,90 @@ public class CigaretteConceptionRecord {
 //				+ ", Health: " + this.health;
 //	}
 
-    public static void main( String[] args ) {
+    public static void main( String[] args ) throws IOException {
 //    	calculateAverageSize();
-    	rangeStuff();
+//    	rangeStuff();
+    	multimapStuff();
     }
     
     public static double calculateAverageSize() {
-    	ArrayListMultimap<Integer, Integer> almm = readCSVData("Doctor.csv");
-    	List<Integer> al = (List<Integer>) almm.get(4);
-    	int numFamilies = al.size();
-    	int total = 0;
+//    	ArrayListMultimap<Integer, Integer> almm = readCSVData("Doctor.csv");
+//    	List<Integer> al = (List<Integer>) almm.get(4);
+//    	int numFamilies = al.size();
+//    	int total = 0;
     	
-    	 for (int i : al) {
-    		 total += i;
-    	 }
+//    	 for (int i : al) {
+//    		 total += i;
+//    	 }
     	
-    	return ((double)total / (double)numFamilies);
-    }
-    
-    public static int rangeStuff() {
-    	TreeRangeSet health = TreeRangeSet.create();
-    	
-    	health.add(Range.open(0, 10));
-//    	health.add(Range.closedOpen(1, 1));
-    	
-    	System.out.println(health.contains(2));
-    	System.out.println(health.contains(5));
-    	
+//    	return ((double)total / (double)numFamilies);
     	return 0;
     }
     
-    public static ArrayListMultimap<Integer, Integer> readCSVData(String fileName) {
-    	String currLine = null;
+    public static ArrayListMultimap<Integer, Integer> multimapStuff() throws IOException {
+    	ArrayListMultimap<Integer, Integer> multimap = ArrayListMultimap.create();
+    	String currLine;
+    	
+    	BufferedReader br = getBufferedReader("Doctor.csv");
+		while ((currLine = br.readLine()) != null) {
+			String[] splitLine = currLine.split(",");
+		
+			CigaretteConceptionRecord ccr =
+				new CigaretteConceptionRecord(
+					Integer.parseInt(splitLine[0].replaceAll("\"", "")),
+					Integer.parseInt(splitLine[1]),
+					Integer.parseInt(splitLine[2]),
+					Double.parseDouble(splitLine[3]),
+					Double.parseDouble(splitLine[4]));
+		
+			multimap.put(ccr.getDoctor(), ccr.getChildren());
+		}
+
+    	return multimap;
+    }
+    
+    public static int rangeStuff() throws IOException {
+    	TreeRangeSet<Integer> lowerHalf = TreeRangeSet.create();
+    	TreeRangeSet<Integer> upperHalf = TreeRangeSet.create();
+    	String currLine;
+    	
+    	lowerHalf.add(Range.open(0, 5000));
+    	upperHalf.add(Range.closedOpen(5000, 10000));
+    	
+//    	System.out.println(lowerHalf.contains(2500));
+//    	System.out.println(lowerHalf.contains(7500));
+
+    	BufferedReader br = getBufferedReader("Doctor.csv");
+		while ((currLine = br.readLine()) != null) {
+			String[] splitLine = currLine.split(",");
+		
+			CigaretteConceptionRecord ccr =
+				new CigaretteConceptionRecord(
+					Integer.parseInt(splitLine[0].replaceAll("\"", "")),
+					Integer.parseInt(splitLine[1]),
+					Integer.parseInt(splitLine[2]),
+					Double.parseDouble(splitLine[3]),
+					Double.parseDouble(splitLine[4]));
+		
+//			multimap.put(ccr.getDoctor(), ccr.getChildren());
+		}
+
+    	return 0;
+    }
+    
+    public static BufferedReader getBufferedReader (String fileName) {
     	File csvFile = new File(fileName);
-    	ArrayListMultimap<Integer, Integer> multiMap = ArrayListMultimap.create();
+    	BufferedReader br = null;
     	
     	try {
-    		BufferedReader br = new BufferedReader(new FileReader(csvFile));
+    		br = new BufferedReader(new FileReader(csvFile));
     		br.readLine(); // Skip over the header line of the file
     		
-    		while ((currLine = br.readLine()) != null) {
-    			String[] splitLine = currLine.split(",");
-    			
-    			CigaretteConceptionRecord ccr =
-    					new CigaretteConceptionRecord(
-    							Integer.parseInt(splitLine[0].replaceAll("\"", "")),
-    							Integer.parseInt(splitLine[1]),
-    							Integer.parseInt(splitLine[2]),
-    							Double.parseDouble(splitLine[3]),
-    							Double.parseDouble(splitLine[4]));
-    			
-    			multiMap.put(ccr.getDoctor(), ccr.getChildren());
-    			
-//    			System.out.println(ccr.toString());
-    		}
-    		
-    	} catch (Exception e) {
+    	} catch (IOException e) {
     		e.printStackTrace();
     	}
     	
-    	return multiMap;
+		return br;
     }
     
     public int getId() {
