@@ -1,3 +1,6 @@
+// Wes Breisch & Ian Jacobs
+// CSC375 Practice #8
+
 package csc375.Practice_08.problem01test;
 
 import java.io.IOException;

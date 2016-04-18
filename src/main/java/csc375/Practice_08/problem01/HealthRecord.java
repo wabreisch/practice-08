@@ -1,3 +1,6 @@
+// Wes Breisch & Ian Jacobs
+// CSC375 Practice #8
+
 package csc375.Practice_08.problem01;
 
 import java.io.BufferedReader;
@@ -50,14 +53,8 @@ public class HealthRecord {
     public double calculateAverageDoctorVisits() throws IOException {
     	ArrayListMultimap<Integer, Integer> multimap = generateMultimap();
     	List<Integer> numDoctorVisits = (List<Integer>) multimap.get(4);
-    	int numFamilies = numDoctorVisits.size();
-    	int total = 0;
     	
-    	 for (int i : numDoctorVisits) {
-    		 total += i;
-    	 }
-    	
-    	return ((double)total / (double)numFamilies);
+    	return numDoctorVisits.stream().mapToInt(Integer::intValue).average().getAsDouble();
     }
     
     /**
