@@ -25,7 +25,6 @@ public class StringProcessor {
 	}
 	
 	public Iterable<String> fourCharSplitter() {
-		System.out.println(Splitter.fixedLength(4).split(this.input));
 		return Splitter.fixedLength(4).split(this.input);
 	}
 
