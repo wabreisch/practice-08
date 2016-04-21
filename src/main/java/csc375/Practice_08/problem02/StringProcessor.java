@@ -1,3 +1,6 @@
+// Wes Breisch
+// CSC375 Practice #8
+
 package csc375.Practice_08.problem02;
 
 import com.google.common.base.CharMatcher;
